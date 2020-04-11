@@ -7,6 +7,7 @@ from flask import jsonify, Blueprint, request
 # user = Blueprint('web', __name__)
 from . import api
 from ..forms.user import UserForm
+from ..models.user import db, User
 
 
 @api.route("/users")
@@ -40,6 +41,9 @@ def get_user_info():
     if request.method == "GET":
         form = UserForm(request.args)
         print("get请求来了")
+    # 数据库的连接
+        user = db.session.query(User).filter(User.user_name == form.username.data.strip())
+        print(user)
     if request.method == "POST":
         print("post请求来了")
     return "这把有效了"
